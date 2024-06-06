@@ -192,6 +192,53 @@ const deleteDiscussionByIdHandler = async (request, h) => {
     return response;
   }
 };
+const addCommentHandler = async (request, h) => {
+  const { discussionId } = request.params;
+  const { username, comment } = request.payload;
+
+  if (!username || !comment) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan komentar. Mohon isi nama user dan komentar',
+    });
+    response.code(400);
+    return response;
+  }
+
+  try {
+    const doc = await discussionsCollection.doc(discussionId).get();
+    if (doc.exists) {
+      const discussion = doc.data();
+      const updatedComments = [...discussion.comments, { username, comment, createdAt: new Date().toISOString() }];
+      
+      await discussionsCollection.doc(discussionId).update({
+        comments: updatedComments,
+        updatedAt: new Date().toISOString(),
+      });
+
+      const response = h.response({
+        status: 'success',
+        message: 'Komentar berhasil ditambahkan',
+      });
+      response.code(200);
+      return response;
+    } else {
+      const response = h.response({
+        status: 'fail',
+        message: 'Diskusi tidak ditemukan',
+      });
+      response.code(404);
+      return response;
+    }
+  } catch (error) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan komentar',
+    });
+    response.code(500);
+    return response;
+  }
+};
 
 module.exports = {
   addDiscussionHandler,
@@ -199,4 +246,5 @@ module.exports = {
   getDiscussionByIdHandler,
   editDiscussionByIdHandler,
   deleteDiscussionByIdHandler,
+  addCommentHandler,
 };
