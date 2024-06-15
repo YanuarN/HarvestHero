@@ -1,8 +1,32 @@
+require('dotenv').config();
 const { Firestore } = require('@google-cloud/firestore');
 const { nanoid } = require('nanoid');
+const { Storage } = require('@google-cloud/storage');
 
 const db = new Firestore();
 const discussionsCollection = db.collection('discussions');
+const storage = new Storage({
+  projectId: "harvesthero",
+  keyFilename: "credential.json",
+});
+const bucket = storage.bucket("bucket_name");
+
+const uploadImage = async (file) => {
+  const { hapi: { filename }, _data } = file;
+  const blob = bucket.file(filename);
+  const blobStream = blob.createWriteStream({
+    resumable: false,
+  });
+
+  return new Promise((resolve, reject) => {
+    blobStream.on('finish', () => {
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+      resolve(publicUrl);
+    }).on('error', (err) => {
+      reject(err);
+    }).end(_data);
+  });
+};
 
 // Handler untuk menambah diskusi
 const addDiscussionHandler = async (request, h) => {
@@ -19,6 +43,21 @@ const addDiscussionHandler = async (request, h) => {
     return response;
   }
 
+  let imageUrl = '';
+  if (request.payload.file) {
+    try {
+      imageUrl = await uploadImage(request.payload.file);
+    } catch (err) {
+      const response = h.response({
+        status: 'fail',
+        message: 'Gagal mengupload gambar',
+        error: err.message,
+      });
+      response.code(500);
+      return response;
+    }
+  }
+
   const id = nanoid(16);
   const createdAt = new Date().toISOString();
   const updatedAt = createdAt;
@@ -28,6 +67,7 @@ const addDiscussionHandler = async (request, h) => {
     username,
     title,
     content,
+    imageUrl,
     likes: likes || 0,
     comments: comments || [],
     createdAt,
@@ -49,11 +89,14 @@ const addDiscussionHandler = async (request, h) => {
     const response = h.response({
       status: 'fail',
       message: 'Diskusi gagal ditambahkan',
+      error: error.message,
     });
     response.code(500);
     return response;
   }
 };
+
+
 
 // Handler untuk mendapatkan semua diskusi
 const getAllDiscussionsHandler = async (request, h) => {
@@ -192,6 +235,98 @@ const deleteDiscussionByIdHandler = async (request, h) => {
     return response;
   }
 };
+// Handler untuk menambahkan komentar pada diskusi
+const addCommentHandler = async (request, h) => {
+  const { discussionId } = request.params;
+  const { username, comment } = request.payload;
+
+  if (!username || !comment) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan komentar. Mohon isi nama user dan komentar',
+    });
+    response.code(400);
+    return response;
+  }
+
+  try {
+    const doc = await discussionsCollection.doc(discussionId).get();
+    if (doc.exists) {
+      const discussion = doc.data();
+      const updatedComments = [
+        ...discussion.comments, 
+        { username, comment, createdAt: new Date().toISOString() }
+      ];
+
+      await discussionsCollection.doc(discussionId).update({
+        comments: updatedComments,
+        updatedAt: new Date().toISOString(),
+      });
+
+      const response = h.response({
+        status: 'success',
+        message: 'Komentar berhasil ditambahkan',
+      });
+      response.code(200);
+      return response;
+    } else {
+      const response = h.response({
+        status: 'fail',
+        message: 'Diskusi tidak ditemukan',
+      });
+      response.code(404);
+      return response;
+    }
+  } catch (error) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan komentar',
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+
+// Handler untuk menambahkan like pada diskusi
+const addLikeHandler = async (request, h) => {
+  const { discussionId } = request.params;
+
+  try {
+    const doc = await discussionsCollection.doc(discussionId).get();
+    if (doc.exists) {
+      const discussion = doc.data();
+      const updatedLikes = (discussion.likes || 0) + 1;
+
+      await discussionsCollection.doc(discussionId).update({
+        likes: updatedLikes,
+        updatedAt: new Date().toISOString(),
+      });
+
+      const response = h.response({
+        status: 'success',
+        message: 'Like berhasil ditambahkan',
+      });
+      response.code(200);
+      return response;
+    } else {
+      const response = h.response({
+        status: 'fail',
+        message: 'Diskusi tidak ditemukan',
+      });
+      response.code(404);
+      return response;
+    }
+  } catch (error) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan like',
+    });
+    response.code(500);
+    return response;
+  }
+};
+
 
 module.exports = {
   addDiscussionHandler,
@@ -199,4 +334,6 @@ module.exports = {
   getDiscussionByIdHandler,
   editDiscussionByIdHandler,
   deleteDiscussionByIdHandler,
+  addCommentHandler,
+  addLikeHandler,
 };

@@ -4,11 +4,22 @@ const {
     getDiscussionByIdHandler,
     editDiscussionByIdHandler,
     deleteDiscussionByIdHandler,
+    addCommentHandler,
+    addLikeHandler,
   } = require('./handler');
 const routes = [
     {
       method: 'POST',
       path: '/discussions',
+      options: {
+        payload: {
+          maxBytes: 209715200,
+          output: 'stream',
+          parse: true,
+          allow: 'multipart/form-data',
+          multipart: true,
+        },
+      },
       handler: addDiscussionHandler,
     },
     {
@@ -30,6 +41,16 @@ const routes = [
       method: 'DELETE',
       path: '/discussions/{discussionId}',
       handler: deleteDiscussionByIdHandler,
+    },
+    {
+      method: 'POST',
+      path: '/discussions/{discussionId}/comments',
+      handler: addCommentHandler,
+    },
+    {
+      method: 'POST',
+      path: '/discussions/{discussionId}/likes',
+      handler: addLikeHandler,
     },
   ];
   
