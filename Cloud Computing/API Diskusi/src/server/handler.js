@@ -235,7 +235,7 @@ const deleteDiscussionByIdHandler = async (request, h) => {
     return response;
   }
 };
-// Handler untuk menambahkan komentar pada diskusi
+
 const addCommentHandler = async (request, h) => {
   const { discussionId } = request.params;
   const { username, comment } = request.payload;
@@ -253,11 +253,13 @@ const addCommentHandler = async (request, h) => {
     const doc = await discussionsCollection.doc(discussionId).get();
     if (doc.exists) {
       const discussion = doc.data();
+
       const updatedComments = [
         ...discussion.comments, 
         { username, comment, createdAt: new Date().toISOString() }
       ];
 
+      const updatedComments = [...discussion.comments, { username, comment, createdAt: new Date().toISOString() }];
       await discussionsCollection.doc(discussionId).update({
         comments: updatedComments,
         updatedAt: new Date().toISOString(),
@@ -286,6 +288,7 @@ const addCommentHandler = async (request, h) => {
     return response;
   }
 };
+
 
 
 // Handler untuk menambahkan like pada diskusi

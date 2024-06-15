@@ -47,6 +47,7 @@ const routes = [
       path: '/discussions/{discussionId}/comments',
       handler: addCommentHandler,
     },
+
     {
       method: 'POST',
       path: '/discussions/{discussionId}/likes',
