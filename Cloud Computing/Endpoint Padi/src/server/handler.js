@@ -44,7 +44,7 @@ async function getHistoriesHandler(_, h) {
 
         return h.response({
             status: 'success',
-            data: prediksipadi,
+            data: predictions,
         }).code(200);
     } catch (error) {
         console.error('Error fetching predictions:', error);
