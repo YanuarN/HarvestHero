@@ -6,3 +6,5 @@ Label for prototype #1 will be :
 Label for Prototype #2 will be :
 <br> {'Blight': 0, 'Common_Rust': 1, 'Gray_Leaf_Spot': 2, 'Healthy': 3, 'Mold': 4, 'Northern_Leaf_Blight': 5, 'Phosphorus_Deficiency': 6,
 <br> 'Potassium_Deficiency': 7}
+
+<br> dataset resource: https://universe.roboflow.com/project-8qhhw/corn-hesmq
