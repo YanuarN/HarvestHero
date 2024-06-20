@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Harvest Hero</string>
+    <string name="default_web_client_id">638729793723-qphdki5j8true1otb74r8rer9ns8h2pl.apps.googleusercontent.com</string>
+    <string name="pilih_padi">Saya petani padi\n</string>
+    <string name="pilih_jagung">Saya petani jagung</string>
+    <string name="pilih_pisang">Saya petani pisang</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="pertanyaan_faq">Tanaman apa aja yang bisa di deteksi oleh app Harvest Hero?</string>
+    <string name="jawab_faq">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nullam condimentum erat et risus lobortis, eget fringilla elit accumsan. Nulla facilisi.
+        Nulla facilisi. Ut venenatis enim eget neque tempus, nec elementum quam faucibus</string>
+
+    <string-array name="plant_types">
+        <item>Jagung</item>
+        <item>Padi</item>
+        <item>Pisang</item>
+    </string-array>
+</resources>
