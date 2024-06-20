@@ -1,4 +1,6 @@
+# Corn Disease Detection - HarvestHero
 
+This repository contains the essential files and resources for the HarvestHero Corn Disease Detection. The goal of this project is to accurately detect and classify various Corn leaf diseases using machine learning models. 
 
 ### Model Prototype #1 MVP
 **Model Corn Prototype #1 with 12 classification (Diseases, Nutrition Deficiency, and Pest) with 85%++ accuracy** <br>
