@@ -1,8 +1,6 @@
-# Harvest Hero
-
-![Harvest Hero](https://drive.google.com/uc?export=view&id=1ZqcuAIEojSlv0IuW7E00UGkNSEHRRG16)
 ![Harvest Hero Logo](https://github.com/YanuarN/HarvestHero/blob/main/logo.png?raw=true)
 
+# Harvest Hero
 Welcome to Harvest Hero, the ultimate plant disease detection app designed to help farmers and agricultural enthusiasts protect their crops and increase yields.
 
 ## Introduction

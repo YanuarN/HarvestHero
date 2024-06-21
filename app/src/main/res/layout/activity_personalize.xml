@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.harvesthero.ui.personalize.PersonalizeActivity">
+    <!-- ImageView placeholder -->
+    <ImageView
+        android:id="@+id/imageViewPlaceholder"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/logoharvestheroes"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="32dp"/>
+
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="Anda petani apa ?"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <!-- RadioGroup with RadioButtons -->
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="32dp">
+
+        <RadioButton
+            android:id="@+id/radioButtonRice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pilih_padi"
+            android:background="@drawable/radio_button_background"
+            android:buttonTint="@android:color/holo_green_light"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonCorn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pilih_jagung"
+            android:background="@drawable/radio_button_background"
+            android:buttonTint="@android:color/holo_green_light"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonBanana"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pilih_pisang"
+            android:background="@drawable/radio_button_background"
+            android:buttonTint="@android:color/holo_green_light"
+            android:layout_marginBottom="8dp"/>
+    </RadioGroup>
+
+    <!-- Skip and Next buttons in a horizontal LinearLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:layout_weight="1"
+            android:layout_gravity="end"/>
+    </LinearLayout>
+</LinearLayout>
